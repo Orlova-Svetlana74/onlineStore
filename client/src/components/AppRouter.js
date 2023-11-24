@@ -6,7 +6,8 @@ import { Routes, Route } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from '..';
 import Auth from '../pages/Auth';
-// import { ProtectedRoute } from '../components/protected-routs/protected-routs';
+import { ProtectedRoute } from './protected-routs/protected-routs';
+
 // import { authRoutes, publicRoutes } from '../routes';
 
 // import {
@@ -20,7 +21,7 @@ import Auth from '../pages/Auth';
 
 const AppRouter = () => {
   const { user } = useContext(Context);
-  console.log(user);
+  // console.log(user);
   // const isAuth = false;
   return (
     <Routes>
@@ -28,8 +29,10 @@ const AppRouter = () => {
       <Route path="/" element={<Shop />} />
       <Route path="/device/:id" element={<DevicePage />} />
       <Route path="/registration" element={<Auth />} />
-      <Route path="/basket" element={<Basket />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route element={<ProtectedRoute redirectPath={'/login'} />}>
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/admin" element={<Admin />} />
+      </Route>
     </Routes>
   );
 };

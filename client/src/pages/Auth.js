@@ -1,9 +1,33 @@
 import { Card, Container, Form, Button, Row } from 'react-bootstrap';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { login, registration } from '../http/userAPI';
+import { useContext, useState } from 'react';
+import { observable } from 'mobx';
+import { Context } from '..';
 
-const Auth = () => {
+const Auth = observable(() => {
+  const navigate = useNavigate();
+  const { user } = useContext(Context);
   const location = useLocation();
   const isLogin = location.pathname === '/login';
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  console.log(isLogin);
+  const click = async () => {
+    try {
+      // let data;
+      if (isLogin) {
+       await login(email, password);
+      } else {
+        await registration(email, password);
+      }
+      user.setUser(user);
+      user.setIsAuth(true);
+      navigate('/');
+    } catch (e) {
+      alert(e.response.data.message);
+    }
+  };
 
   return (
     <Container
@@ -12,9 +36,20 @@ const Auth = () => {
       <Card style={{ width: 600 }} className="p-5">
         <h2 className="m-auto">{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
         <Form className="d-flex flex-column">
-          <input className="nt-2" placeholder="Введите ваш email..."></input>
+          <input
+            className="mt-3"
+            placeholder="Введите ваш email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <input className="nt-2" placeholder="Введите ваш пароль..."></input>
+          <input
+            className="mt-3"
+            placeholder="Введите ваш пароль..."
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
 
           <Row className="d-flex justify-content-between nt-3 pl-3 pr-3">
             {isLogin ? (
@@ -29,11 +64,13 @@ const Auth = () => {
               </div>
             )}
 
-            <Button variant={'outline-success'}>Войти</Button>
+            <Button variant={'outline-success'} onClick={click}>
+              {isLogin ? 'Войти' : 'Регистрация'}
+            </Button>
           </Row>
         </Form>
-      </Card>      
+      </Card>
     </Container>
   );
-};
+});
 export default Auth;
