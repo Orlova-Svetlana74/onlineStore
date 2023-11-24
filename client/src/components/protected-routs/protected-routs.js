@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute =({ redirectPath = '/login' }) => {
-  const isAuth = true;
-  if (!isAuth ) {
-    return <Navigate to={redirectPath} replace />;
+export function ProtectedRoute({ redirectPath = '/login'}) {
+  const isAuth = true
+  if (!isAuth) {
+    return <Navigate to={redirectPath} replace />
   }
-  return <Outlet />;
+
+  return <Outlet />
 }
-export default ProtectedRoute
