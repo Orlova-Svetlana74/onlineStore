@@ -21,18 +21,18 @@ import { ProtectedRoute } from './protected-routs/protected-routs';
 
 const AppRouter = () => {
   const { user } = useContext(Context);
-  // console.log(user);
-  // const isAuth = false;
+  console.log(user);
+  // const isAuth = true;
   return (
     <Routes>
       <Route path="/login" element={<Auth />} />
       <Route path="/" element={<Shop />} />
       <Route path="/device/:id" element={<DevicePage />} />
       <Route path="/registration" element={<Auth />} />
-      <Route element={<ProtectedRoute redirectPath={'/login'} />}>
-        <Route path="/basket" element={<Basket />} />
-        <Route path="/admin" element={<Admin />} />
-      </Route>
+      {/* <Route element={<ProtectedRoute redirectPath={'/login'} />}> */}
+      <Route path="/basket" element={<Basket />} />
+      <Route path="/admin" element={<Admin />} />
+      {/* </Route> */}
     </Routes>
   );
 };

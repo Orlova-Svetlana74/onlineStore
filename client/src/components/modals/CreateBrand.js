@@ -1,8 +1,16 @@
 import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { createBrand } from '../../http/deviceAPI';
 
 const CreatBrand = ({ show, onHide }) => {
-    return (
+  const [value, setValue] = useState('');
+
+  const addBrand = () => {
+    createBrand({ name: value }).then((data) => setValue(''));
+    onHide();
+  };
+  return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -11,7 +19,9 @@ const CreatBrand = ({ show, onHide }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Control            
+          <Form.Control
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             placeholder={'Введите название типа'}
           />
         </Form>
@@ -20,11 +30,12 @@ const CreatBrand = ({ show, onHide }) => {
         <Button variant="outline-danger" onClick={onHide}>
           Закрыть
         </Button>
-        <Button variant="outline-success">
+        <Button variant="outline-success" onClick={addBrand}>
           Добавить
         </Button>
       </Modal.Footer>
     </Modal>
-)};
+  );
+};
 
 export default CreatBrand;

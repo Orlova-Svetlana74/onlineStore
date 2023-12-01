@@ -2,24 +2,26 @@ import { Card, Container, Form, Button, Row } from 'react-bootstrap';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { login, registration } from '../http/userAPI';
 import { useContext, useState } from 'react';
-import { observable } from 'mobx';
-import { Context } from '..';
+import { observer } from 'mobx-react-lite';
+import { Context } from '../index';
 
-const Auth = observable(() => {
+const Auth = observer(() => {
   const navigate = useNavigate();
   const { user } = useContext(Context);
   const location = useLocation();
   const isLogin = location.pathname === '/login';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   console.log(isLogin);
+
   const click = async () => {
     try {
-      // let data;
+      let data;
       if (isLogin) {
-       await login(email, password);
+        data = await login(email, password);
       } else {
-        await registration(email, password);
+        data = await registration(email, password);
       }
       user.setUser(user);
       user.setIsAuth(true);
@@ -27,7 +29,7 @@ const Auth = observable(() => {
     } catch (e) {
       alert(e.response.data.message);
     }
-  };
+  };  
 
   return (
     <Container

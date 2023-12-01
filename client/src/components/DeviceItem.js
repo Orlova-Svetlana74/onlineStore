@@ -10,12 +10,12 @@ const DeviceItem = ({ device }) => {
     navigate('/device' + '/' + device.id);
   };
   return (
-    <Col md={3} className={"mt-3"} onClick={deviceBackButtonClick}>
+    <Col md={3} className={'mt-3'} onClick={deviceBackButtonClick}>
       <Card style={{ width: 150, cursor: 'pointer' }} border={'light'}>
         <Image
           width={150}
           height={150}
-          src={device.img}
+          src={process.env.REACT_APP_API_URL + device.img}
         />
         <div className="text-black-50 mt-1 d-flex justify-content-between align-items-center">
           <div>Samsung...</div>
@@ -24,7 +24,7 @@ const DeviceItem = ({ device }) => {
             <Image width={18} height={18} src={star} />
           </div>
         </div>
-        <div>{device.name}</div>        
+        <div>{device.name}</div>
       </Card>
     </Col>
   );
